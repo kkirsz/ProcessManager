@@ -1,5 +1,5 @@
 {
-  "name": "dpfaffenbauer/process-manager",
+  "name": "kkirsz/process-manager",
   "type": "pimcore-bundle",
   "license": "GPL-3.0-or-later",
   "description": "Process Manager helps you to see statuses for long running Processes",
