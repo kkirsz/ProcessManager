@@ -49,11 +49,24 @@ class ProcessFactory implements ProcessFactoryInterface
         int $started = -1,
         int $completed = 0,
         int $stoppable = 0,
-        string $status = null
+        string $status = null,
+        int $executable = null
     ) {
-        if($started == -1){
+        if ($started == -1) {
             $started = time();
         }
-        return new $this->model($name, $type, $message, $total, $progress, $started, $completed, $stoppable, $status);
+
+        return new $this->model(
+            $name,
+            $type,
+            $message,
+            $total,
+            $progress,
+            $started,
+            $completed,
+            $stoppable,
+            $status,
+            $executable
+        );
     }
 }

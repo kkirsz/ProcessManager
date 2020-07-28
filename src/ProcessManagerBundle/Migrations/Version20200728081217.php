@@ -13,10 +13,7 @@ class Version20200728081217 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         $processesTable = $schema->getTable("process_manager_processes");
-        $processesTable->addColumn('executable', 'integer', [
-            'unsigned' => true,
-            'notnull' => false,
-        ]);
+        $processesTable->addColumn('executable', 'integer', ['notnull' => false]);
     }
 
     /**
