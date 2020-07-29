@@ -48,6 +48,8 @@ class ProcessController extends ResourceController
             $list->setOrder("DESC");
         }
 
+        $list->setCondition(sprintf('(progress < total OR (%d - started) <= 604800)', time()));
+
         $data = $list->getItems(
             $request->get('start', 0),
             $request->get('limit', 50)
