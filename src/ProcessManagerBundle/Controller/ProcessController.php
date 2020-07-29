@@ -44,7 +44,7 @@ class ProcessController extends ResourceController
             $list->setOrderKey($sort->property);
             $list->setOrder($sort->direction);
         } else {
-            $list->setOrderKey("id");
+            $list->setOrderKey("started");
             $list->setOrder("DESC");
         }
 
