@@ -15,8 +15,10 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use Pimcore\Tool\Admin;
 use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExecutableController extends ResourceController
@@ -32,6 +34,34 @@ class ExecutableController extends ResourceController
         return $this->viewHandler->handle([
             'types' => array_keys($types)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listAction(Request $request)
+    {
+        $class = $this->repository->getClassName();
+        $listingClass = $class.'\Listing';
+        $user = Admin::getCurrentUser();
+
+        /**
+         * @var Executable\Listing $list
+         */
+        $list = new $listingClass();
+
+        if ($user) {
+            $list->setCondition("user = ?", $user->getId());
+        }
+
+        $data = $list->getItems(
+            $request->get('start', 0),
+            $request->get('limit', 50)
+        );
+
+        return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
     /**
