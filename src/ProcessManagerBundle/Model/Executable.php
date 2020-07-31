@@ -60,6 +60,11 @@ class Executable extends AbstractModel implements ExecutableInterface
     public $lastrun;
 
     /**
+     * @var int|null
+     */
+    public $user;
+
+    /**
      * get Log by id
      *
      * @param $id
@@ -204,5 +209,21 @@ class Executable extends AbstractModel implements ExecutableInterface
     public function setLastrun($lastrun)
     {
         $this->lastrun = $lastrun;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param int $user
+     */
+    public function setUser($user)
+    {
+        $this->user = (int) $user;
     }
 }
