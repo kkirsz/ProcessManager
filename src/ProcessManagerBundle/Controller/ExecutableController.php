@@ -51,10 +51,7 @@ class ExecutableController extends ResourceController
          * @var Executable\Listing $list
          */
         $list = new $listingClass();
-
-        if ($user) {
-            $list->setCondition("user = ?", $user->getId());
-        }
+        $list->setCondition("user = ?", $user ? $user->getId() : 0);
 
         $data = $list->getItems(
             $request->get('start', 0),
