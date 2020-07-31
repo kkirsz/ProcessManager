@@ -29,6 +29,7 @@ interface ProcessFactoryInterface extends FactoryInterface
      * @param int $stoppable
      * @param string|null $status
      * @param int|null $executable
+     * @param int|null $user
      * @return mixed
      */
     public function createProcess(
@@ -41,6 +42,7 @@ interface ProcessFactoryInterface extends FactoryInterface
         int $completed = 0,
         int $stoppable = 0,
         string $status = null,
-        int $executable = null
+        int $executable = null,
+        int $user = null
     );
 }

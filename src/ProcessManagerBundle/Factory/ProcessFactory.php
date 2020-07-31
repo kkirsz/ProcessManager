@@ -50,7 +50,8 @@ class ProcessFactory implements ProcessFactoryInterface
         int $completed = 0,
         int $stoppable = 0,
         string $status = null,
-        int $executable = null
+        int $executable = null,
+        int $user = null
     ) {
         if ($started == -1) {
             $started = time();
@@ -66,7 +67,8 @@ class ProcessFactory implements ProcessFactoryInterface
             $completed,
             $stoppable,
             $status,
-            $executable
+            $executable,
+            $user
         );
     }
 }

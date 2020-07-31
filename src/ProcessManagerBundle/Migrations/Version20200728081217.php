@@ -17,6 +17,7 @@ class Version20200728081217 extends AbstractPimcoreMigration
 
         $processesTable = $schema->getTable("process_manager_processes");
         $processesTable->addColumn('executable', 'integer', ['notnull' => false]);
+        $processesTable->addColumn('user', 'integer', ['notnull' => false]);
     }
 
     /**
@@ -29,5 +30,6 @@ class Version20200728081217 extends AbstractPimcoreMigration
 
         $processesTable = $schema->getTable("process_manager_processes");
         $processesTable->dropColumn("executable");
+        $processesTable->dropColumn("user");
     }
 }
