@@ -12,7 +12,7 @@ class Version20200728081217 extends AbstractPimcoreMigration
      */
     public function up(Schema $schema)
     {
-        $executableTable = $schema->getTable("process_manager_executable");
+        $executableTable = $schema->getTable("process_manager_executables");
         $executableTable->addColumn('user', 'integer', ['notnull' => false]);
 
         $processesTable = $schema->getTable("process_manager_processes");
@@ -24,7 +24,7 @@ class Version20200728081217 extends AbstractPimcoreMigration
      */
     public function down(Schema $schema)
     {
-        $executableTable = $schema->getTable("process_manager_executable");
+        $executableTable = $schema->getTable("process_manager_executables");
         $executableTable->dropColumn('user');
 
         $processesTable = $schema->getTable("process_manager_processes");
