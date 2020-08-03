@@ -18,7 +18,6 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use ProcessManagerBundle\Event\ExecutableEvents;
 use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,10 +39,10 @@ class ExecutableController extends ResourceController
 
     /**
      * @param Request $request
-     * @param EventDispatcherInterface $eventDispatcher
+     *
      * @return mixed|JsonResponse
      */
-    public function listAction(Request $request, EventDispatcherInterface $eventDispatcher)
+    public function listAction(Request $request)
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
@@ -53,7 +52,7 @@ class ExecutableController extends ResourceController
          */
         $list = new $listingClass();
         $event = new GenericEvent($this, ['list' => $list]);
-        $eventDispatcher->dispatch(ExecutableEvents::BEFORE_LIST_LOAD, $event);
+        $this->get('event_dispatcher')->dispatch(ExecutableEvents::BEFORE_LIST_LOAD, $event);
         $list = $event->getArgument('list');
 
         $data = $list->getItems(

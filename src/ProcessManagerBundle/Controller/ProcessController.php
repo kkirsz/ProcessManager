@@ -52,7 +52,7 @@ class ProcessController extends ResourceController
         }
 
         $event = new GenericEvent($this, ['list' => $list]);
-        $eventDispatcher->dispatch(ProcessEvents::BEFORE_LIST_LOAD, $event);
+        $this->get('event_dispatcher')->dispatch(ProcessEvents::BEFORE_LIST_LOAD, $event);
         $list = $event->getArgument('list');
 
         $data = $list->getItems(
