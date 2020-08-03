@@ -19,7 +19,6 @@ use Pimcore\Db;
 use ProcessManagerBundle\Event\ProcessEvents;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +32,7 @@ class ProcessController extends ResourceController
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request, EventDispatcherInterface $eventDispatcher)
+    public function listAction(Request $request)
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
