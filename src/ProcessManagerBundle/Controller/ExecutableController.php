@@ -15,9 +15,11 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use Pimcore\Tool\Admin;
+use ProcessManagerBundle\Event\ExecutableEvents;
 use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,20 +40,21 @@ class ExecutableController extends ResourceController
 
     /**
      * @param Request $request
-     *
-     * @return JsonResponse
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return mixed|JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, EventDispatcherInterface $eventDispatcher)
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
-        $user = Admin::getCurrentUser();
 
         /**
          * @var Executable\Listing $list
          */
         $list = new $listingClass();
-        $list->setCondition("user = ?", $user ? $user->getId() : 0);
+        $event = new GenericEvent($this, ['list' => $list]);
+        $eventDispatcher->dispatch(ExecutableEvents::BEFORE_LIST_LOAD, $event);
+        $list = $event->getArgument('list');
 
         $data = $list->getItems(
             $request->get('start', 0),

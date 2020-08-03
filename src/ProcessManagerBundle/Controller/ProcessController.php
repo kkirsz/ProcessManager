@@ -16,9 +16,11 @@ namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Pimcore\Db;
-use Pimcore\Tool\Admin;
+use ProcessManagerBundle\Event\ProcessEvents;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,11 +33,10 @@ class ProcessController extends ResourceController
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, EventDispatcherInterface $eventDispatcher)
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
-        $user = Admin::getCurrentUser();
 
         /**
          * @var Process\Listing $list
@@ -50,10 +51,9 @@ class ProcessController extends ResourceController
             $list->setOrder("DESC");
         }
 
-        $list->setCondition(
-            sprintf('user = ? AND (progress < total OR (%d - started) <= 604800)', time()),
-            $user ? $user->getId() : 0
-        );
+        $event = new GenericEvent($this, ['list' => $list]);
+        $eventDispatcher->dispatch(ProcessEvents::BEFORE_LIST_LOAD, $event);
+        $list = $event->getArgument('list');
 
         $data = $list->getItems(
             $request->get('start', 0),
