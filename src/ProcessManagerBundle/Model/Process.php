@@ -76,6 +76,16 @@ class Process extends AbstractModel implements ProcessInterface
     public $status;
 
     /**
+     * @var null|int
+     */
+    public $executable;
+
+    /**
+     * @var int|null
+     */
+    public $user;
+
+    /**
      * Process constructor.
      * @param string $name
      * @param string|null $type
@@ -86,6 +96,8 @@ class Process extends AbstractModel implements ProcessInterface
      * @param int $completed
      * @param int $stoppable
      * @param string|null $status
+     * @param null|int $executable
+     * @param null|int $user
      */
     public function __construct(
         string $name,
@@ -96,7 +108,9 @@ class Process extends AbstractModel implements ProcessInterface
         int $started = 0,
         int $completed = 0,
         int $stoppable = 0,
-        string $status = null
+        string $status = null,
+        int $executable = null,
+        int $user = null
     )
     {
         $this->name = $name;
@@ -108,6 +122,8 @@ class Process extends AbstractModel implements ProcessInterface
         $this->completed = $completed;
         $this->stoppable = $stoppable;
         $this->status = $status;
+        $this->executable = $executable;
+        $this->user = $user;
     }
 
     /**
@@ -365,5 +381,37 @@ class Process extends AbstractModel implements ProcessInterface
     public function setStatus(?string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getExecutable(): ?int
+    {
+        return $this->executable;
+    }
+
+    /**
+     * @param int|null $executable
+     */
+    public function setExecutable(?int $executable): void
+    {
+        $this->executable = $executable;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUser(): ?int
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param int|null $user
+     */
+    public function setUser(?int $user): void
+    {
+        $this->user = $user;
     }
 }

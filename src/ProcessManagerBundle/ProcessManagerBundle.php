@@ -42,7 +42,7 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
      */
     public function getPackageName()
     {
-        return 'dpfaffenbauer/process-manager';
+        return 'kkirsz/process-manager';
     }
 
     /**
@@ -90,7 +90,7 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
      */
     protected function getComposerPackageName(): string
     {
-        return 'dpfaffenbauer/process-manager';
+        return 'kkirsz/process-manager';
     }
 
     /**

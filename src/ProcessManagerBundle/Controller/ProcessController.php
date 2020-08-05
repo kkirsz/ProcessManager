@@ -16,8 +16,10 @@ namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Pimcore\Db;
+use ProcessManagerBundle\Event\ProcessEvents;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,9 +46,13 @@ class ProcessController extends ResourceController
             $list->setOrderKey($sort->property);
             $list->setOrder($sort->direction);
         } else {
-            $list->setOrderKey("id");
+            $list->setOrderKey("started");
             $list->setOrder("DESC");
         }
+
+        $event = new GenericEvent($this, ['list' => $list]);
+        $this->get('event_dispatcher')->dispatch(ProcessEvents::BEFORE_LIST_LOAD, $event);
+        $list = $event->getArgument('list');
 
         $data = $list->getItems(
             $request->get('start', 0),

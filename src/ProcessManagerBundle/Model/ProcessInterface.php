@@ -111,4 +111,24 @@ interface ProcessInterface extends ResourceInterface
      * @return null|string
      */
     public function getStatus();
+
+    /**
+     * @return int|null
+     */
+    public function getExecutable(): ?int;
+
+    /**
+     * @param int|null $executable
+     */
+    public function setExecutable(?int $executable): void;
+
+    /**
+     * @return int|null
+     */
+    public function getUser(): ?int;
+
+    /**
+     * @param int|null $user
+     */
+    public function setUser(?int $user): void;
 }

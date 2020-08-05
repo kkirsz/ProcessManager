@@ -15,8 +15,11 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use ProcessManagerBundle\Event\ExecutableEvents;
 use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExecutableController extends ResourceController
@@ -32,6 +35,32 @@ class ExecutableController extends ResourceController
         return $this->viewHandler->handle([
             'types' => array_keys($types)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return mixed|JsonResponse
+     */
+    public function listAction(Request $request)
+    {
+        $class = $this->repository->getClassName();
+        $listingClass = $class.'\Listing';
+
+        /**
+         * @var Executable\Listing $list
+         */
+        $list = new $listingClass();
+        $event = new GenericEvent($this, ['list' => $list]);
+        $this->get('event_dispatcher')->dispatch(ExecutableEvents::BEFORE_LIST_LOAD, $event);
+        $list = $event->getArgument('list');
+
+        $data = $list->getItems(
+            $request->get('start', 0),
+            $request->get('limit', 50)
+        );
+
+        return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
     /**

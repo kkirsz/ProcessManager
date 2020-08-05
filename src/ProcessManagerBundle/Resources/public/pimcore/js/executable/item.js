@@ -211,6 +211,9 @@ pimcore.plugin.processmanager.executable.item = Class.create({
             }.bind(this);
 
             if (!this.data.id) {
+                var user = pimcore.globalmanager.get("user");
+                saveData.user = user.id;
+
                 Ext.Ajax.request({
                     url: this.url.add,
                     method: 'post',

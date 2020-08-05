@@ -97,4 +97,14 @@ interface ExecutableInterface extends ResourceInterface
      * @param int $lastrun
      */
     public function setLastrun($lastrun);
+
+    /**
+     * @return int|null
+     */
+    public function getUser();
+
+    /**
+     * @param int $user
+     */
+    public function setUser($user);
 }
