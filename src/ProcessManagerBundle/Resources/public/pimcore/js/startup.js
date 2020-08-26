@@ -34,7 +34,26 @@ pimcore.plugin.processmanager = Class.create(pimcore.plugin.admin, {
                 handler:this.openProcesses
             });
 
-            layoutToolbar.extrasMenu.add({xtype: 'menuseparator'});
+            if (layoutToolbar.extrasMenu === undefined) {
+                var extrasMenu = new Ext.menu.Menu({
+                    items: [],
+                    shadow: false,
+                    cls: "pimcore_navigation_flyout",
+                    listeners: {
+                        "show": function (e) {
+                            Ext.get('pimcore_menu_extras').addCls('active');
+                        },
+                        "hide": function (e) {
+                            Ext.get('pimcore_menu_extras').removeCls('active');
+                        }
+                    }
+                });
+                layoutToolbar.extrasMenu = extrasMenu;
+                Ext.get("pimcore_menu_extras").on("mousedown", layoutToolbar.showSubMenu.bind(extrasMenu)).show();
+            } else {
+                layoutToolbar.extrasMenu.add({xtype: 'menuseparator'});
+            }
+
             layoutToolbar.extrasMenu.add(exportMenu);
 
             this.trigger(document, 'processmanager.ready');
